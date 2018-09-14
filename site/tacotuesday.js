@@ -7,7 +7,19 @@ function attachQueueProcess() {
 		let clientValues = document.getElementsByClassName("client-value");
 		Array.from(clientValues).map(input => clientInputs.push(parseInt(input.value)));
 		event.preventDefault();
-		return clientInputs;
+
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", "/queue.php", true);
+		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		xhr.onreadystatechange(reply => {
+			let statusHtml = "";
+			if(this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+				statusHtml = "<div class=\"alert alert-dismissible" + reply.class + "\" role=\"alert\"><button type=\"button\" class=\"close\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>" +  reply.message + "</div>";
+			} else {
+				statusHtml = "<div class=\"alert alert-dismissible alert-danger\" role=\"alert\"><button type=\"button\" class=\"close\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>AJAX Request returned status " + this.status + "</div>";
+			}
+			document.getElementById("statusArea").innerHTML = statusHtml;
+		});
 	});
 }
 
