@@ -8,6 +8,11 @@ function attachQueueProcess() {
 	});
 }
 
+function populateRandomValues() {
+	let clientValues = document.getElementsByClassName("client-value");
+	Array.from(clientValues).map(input => input.value = Math.ceil(Math.random() * 32));
+}
+
 function writeInputs() {
 	let numClients = parseInt(document.getElementById("numClients").value);
 
