@@ -12,9 +12,11 @@ function attachQueueProcess() {
 		let xhr = new XMLHttpRequest();
 		xhr.open("POST", "/queue.php", true);
 		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		xhr.onreadystatechange = reply => {
-			let statusHtml = "<div class=\"alert alert-dismissible" + reply.class + "\" role=\"alert\"><button type=\"button\" class=\"close\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>" +  reply.message + "</div>";
-			document.getElementById("statusArea").innerHTML = statusHtml;
+		xhr.onreadystatechange = () => {
+			if(xhr.response) {
+				let reply = JSON.parse(xhr.response);
+				document.getElementById("statusArea").innerHTML = "<div class=\"alert alert-dismissible " + reply.class + "\" role=\"alert\"><button type=\"button\" class=\"close\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>" + reply.message + "</div>";
+			}
 		};
 		xhr.send("numCashiers=" + numCashiers + "&queue=" + encodeURIComponent(JSON.stringify(clientInputs)));
 	});
