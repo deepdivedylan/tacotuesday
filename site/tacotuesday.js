@@ -15,11 +15,18 @@ function attachQueueProcess() {
 		xhr.onreadystatechange = () => {
 			if(xhr.response) {
 				let reply = JSON.parse(xhr.response);
-				document.getElementById("statusArea").innerHTML = "<div class=\"alert alert-dismissible " + reply.class + "\" role=\"alert\"><button type=\"button\" class=\"close\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>" + reply.message + "</div>";
+				document.getElementById("statusArea").innerHTML = "<p>Wait for Tacos: " + reply.data +"</p><div id=\"status\"><div class=\"alert alert-dismissible " + reply.class + "\" role=\"alert\"><button type=\"button\" class=\"close\" aria-label=\"Close\" onclick=\"dismiss()\"><span aria-hidden=\"true\">&times;</span></button>" + reply.message + "</div></div>";
 			}
 		};
 		xhr.send("numCashiers=" + numCashiers + "&queue=" + encodeURIComponent(JSON.stringify(clientInputs)));
 	});
+}
+
+/**
+ * dismisses AJAX messages
+ **/
+function dismiss() {
+	document.getElementById("status").innerHTML = "";
 }
 
 /**
