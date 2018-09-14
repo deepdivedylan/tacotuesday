@@ -23,3 +23,31 @@ function serveTacos(array $queue, int $numCashiers): int {
 	return(max($cashiers));
 }
 
+try {
+	// prepare reply
+	$reply = new \stdClass();
+	$reply->class = "alert-success";
+
+	// sanitize inputs
+	$numCashiers = filter_input(INPUT_POST, "numCashiers", FILTER_VALIDATE_INT, ["options" => ["min_range" => 1]]);
+	$queue = filter_input(INPUT_POST, "queue", FILTER_VALIDATE_INT, ["flags" => FILTER_REQUIRE_ARRAY, "options" => ["min_range" => 1]]);
+
+	// handle degenerate cases
+	if(empty($numCashiers) === true) {
+		throw(new Exception("Nobody is serving tacos!? So sad...:("));
+	}
+	if(empty($queue) === true) {
+		throw(new Exception("Nobody wants tacos!?!? Parse error!"));
+	}
+
+	// serve tacos :D
+	$processTime = serveTacos($queue, $numCashiers);
+	$reply->data = $processTime;
+} catch(\Exception $exception) {
+	$reply->class = "alert-danger";
+	$reply->message = $exception->getMessage();
+}
+
+// send reply
+header("Content-type: application/json");
+echo json_encode($reply);
