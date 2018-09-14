@@ -30,7 +30,11 @@ try {
 
 	// sanitize inputs
 	$numCashiers = filter_input(INPUT_POST, "numCashiers", FILTER_VALIDATE_INT, ["options" => ["min_range" => 1]]);
-	$queue = filter_input(INPUT_POST, "queue", FILTER_VALIDATE_INT, ["flags" => FILTER_REQUIRE_ARRAY, "options" => ["min_range" => 1]]);
+	$queue = json_decode($_POST["queue"]);
+	if(is_array($queue) === false) {
+		throw(new Exception("This queue is highly subject to operator error"));
+	}
+	$queue = filter_var($queue, FILTER_VALIDATE_INT, ["flags" => FILTER_REQUIRE_ARRAY, "options" => ["min_range" => 1]]);
 
 	// handle degenerate cases
 	if(empty($numCashiers) === true) {
