@@ -47,6 +47,7 @@ try {
 	// serve tacos :D
 	$processTime = serveTacos($queue, $numCashiers);
 	$reply->data = $processTime;
+	$reply->message = "Calculations complete. Now go eat tacos!";
 } catch(\Exception $exception) {
 	$reply->class = "alert-danger";
 	$reply->message = $exception->getMessage();
